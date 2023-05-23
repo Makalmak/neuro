@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from tensorflow import keras
 from keras import layers
 from keras import models
@@ -17,7 +17,7 @@ os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 app = Flask(__name__)
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/generate', methods=['POST', 'GET'])
 def complete_text():
 
     result = ''
@@ -100,8 +100,10 @@ def complete_text():
 
         result = generated
 
-    # Место для фронта
-    return render_template('index.html', result=result)
+    # Отправка JSON
+    return jsonify({
+        'text': result
+    })
 
 
 if __name__ == '__main__':
